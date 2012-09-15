@@ -311,7 +311,7 @@ namespace MongoProviders
             SecUtility.CheckParameter(ref roleName, true, true, InvalidRoleCharacters, MAX_ROLE_LENGTH, "roleName");
 
             var doc = new BsonDocument();
-            doc.SetDocumentId(roleName.ToLowerInvariant());
+            doc["_id"] = roleName.ToLowerInvariant();
             var result = RoleCollection.Save(doc, SafeMode.True);
             if (!result.Ok)
             {
@@ -342,7 +342,7 @@ namespace MongoProviders
             }
 
             var username = ElementNames.LowercaseUsername;
-            QueryComplete userQuery = Helper.FindQuery(usernameToMatch.ToLowerInvariant(), username);
+            IMongoQuery userQuery = Helper.FindQuery(usernameToMatch.ToLowerInvariant(), username);
             var query = Query.And(
                 Query.EQ(ElementNames.Roles, roleName.ToLowerInvariant()),
                 userQuery
